@@ -1,0 +1,91 @@
+{
+  "rule_files": [],
+  "evaluation_interval": "5s",
+  "tests": [
+    {
+      "interval": "5s",
+      "input_series": [
+        {
+          "series": "probe_success{job=\"erp_disponibilidad\",instance=\"erp_correo_horizonte\"}",
+          "values": "1 0 0 0 1 0 1 1"
+        },
+        {
+          "series": "up{job=\"erp_disponibilidad\",instance=\"erp_correo_horizonte\"}",
+          "values": "1 1 1 1 1 1 1 1"
+        }
+      ],
+      "promql_expr_test": [
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "15s",
+          "exp_samples": [
+            {
+              "labels": "{instance=\"erp_correo_horizonte\",job=\"erp_disponibilidad\"}",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "20s",
+          "exp_samples": [
+            {
+              "labels": "{instance=\"erp_correo_horizonte\",job=\"erp_disponibilidad\"}",
+              "value": 0.5
+            }
+          ]
+        },
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "25s",
+          "exp_samples": [
+            {
+              "labels": "{instance=\"erp_correo_horizonte\",job=\"erp_disponibilidad\"}",
+              "value": 0.5
+            }
+          ]
+        },
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "30s",
+          "exp_samples": [
+            {
+              "labels": "{instance=\"erp_correo_horizonte\",job=\"erp_disponibilidad\"}",
+              "value": 0.5
+            }
+          ]
+        },
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "35s",
+          "exp_samples": [
+            {
+              "labels": "{instance=\"erp_correo_horizonte\",job=\"erp_disponibilidad\"}",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "interval": "5s",
+      "input_series": [
+        {
+          "series": "probe_success{job=\"erp_disponibilidad\",instance=\"erp_correo_horizonte\"}",
+          "values": "1 0 0 0 1 0 1 1"
+        },
+        {
+          "series": "up{job=\"erp_disponibilidad\",instance=\"erp_correo_horizonte\"}",
+          "values": "1 1 1 0"
+        }
+      ],
+      "promql_expr_test": [
+        {
+          "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+          "eval_time": "15s",
+          "exp_samples": []
+        }
+      ]
+    }
+  ]
+}

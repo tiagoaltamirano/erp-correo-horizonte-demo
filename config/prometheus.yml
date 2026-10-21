@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+scrape_configs:
+  - job_name: erp_disponibilidad
+    scrape_timeout: 4s
+    metrics_path: /probe
+    params:
+      module: [http_erp]
+    static_configs:
+      - targets: [http://servicio:8000/erp/health]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: instance
+        replacement: erp_correo_horizonte
+      - target_label: __address__
+        replacement: blackbox:9115
+  - job_name: colector
+    static_configs:
+      - targets: [colector:9101]
+  - job_name: prometheus
+    static_configs:
+      - targets: [localhost:9090]

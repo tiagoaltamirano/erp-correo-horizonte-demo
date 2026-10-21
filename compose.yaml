@@ -1,0 +1,95 @@
+name: erp-demo
+services:
+  servicio:
+    build: .
+    image: erp-correo-demo:1.0
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["registros:/datos"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/status')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  colector:
+    image: erp-correo-demo:1.0
+    pull_policy: never
+    command: ["python", "-m", "src.colector"]
+    volumes: ["registros:/datos:ro"]
+    depends_on:
+      servicio: {condition: service_healthy}
+    restart: unless-stopped
+  blackbox:
+    image: quay.io/prometheus/blackbox-exporter:v0.29.1
+    command: ["--config.file=/etc/blackbox/config.yml"]
+    volumes: ["./config/blackbox.yml:/etc/blackbox/config.yml:ro"]
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus:v3.15.1
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=45d"]
+    volumes: ["./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro", "prometheus:/prometheus"]
+    ports: ["127.0.0.1:9090:9090"]
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana:13.2.4
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Ejecutar iniciar.ps1}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_UNIFIED_ALERTING_MIN_INTERVAL: 10s
+      GF_UNIFIED_ALERTING_RESOLVED_ALERT_RETENTION: 10s
+      GF_SMTP_ENABLED: "true"
+      GF_SMTP_HOST: mailpit:1025
+      GF_SMTP_FROM_ADDRESS: monitoreo@correo-horizonte.test
+      GF_SMTP_FROM_NAME: Monitoreo Correo Horizonte
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
+    volumes: ["./config/grafana:/etc/grafana/provisioning:ro", "./dashboards:/var/lib/grafana/dashboards:ro", "grafana:/var/lib/grafana"]
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on: [prometheus, mailpit]
+    restart: unless-stopped
+  mailpit:
+    image: axllent/mailpit:v1.31.6
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_MAX_MESSAGES: "1000"
+    volumes: ["correo:/data"]
+    ports: ["127.0.0.1:8025:8025"]
+    restart: unless-stopped
+  db:
+    image: mysql:8.4.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Ejecutar iniciar.ps1}
+      MYSQL_DATABASE: glpi
+      MYSQL_USER: glpi
+      MYSQL_PASSWORD: ${GLPI_DB_PASSWORD:?Ejecutar iniciar.ps1}
+    volumes: ["mysql:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping -h 127.0.0.1 -u root -p"$$MYSQL_ROOT_PASSWORD" --silent']
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    restart: unless-stopped
+  glpi:
+    image: glpi/glpi:12.0.0
+    environment:
+      GLPI_DB_HOST: db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: ${GLPI_DB_PASSWORD}
+      DEMO_PASSWORD: ${DEMO_PASSWORD}
+      GLPI_SKIP_AUTOUPDATE: "true"
+    volumes: ["glpi:/var/glpi", "./tools/glpi_configurar.php:/opt/demo/configurar.php:ro"]
+    ports: ["127.0.0.1:8081:80"]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: unless-stopped
+volumes:
+  registros:
+  prometheus:
+  grafana:
+  correo:
+  mysql:
+  glpi:

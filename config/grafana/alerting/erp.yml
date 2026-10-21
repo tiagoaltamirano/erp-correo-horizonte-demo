@@ -1,0 +1,291 @@
+{
+  "apiVersion": 1,
+  "groups": [
+    {
+      "orgId": 1,
+      "name": "ERP demostracion",
+      "folder": "Correo Horizonte",
+      "interval": "10s",
+      "rules": [
+        {
+          "uid": "erp-caida",
+          "title": "ERP · Indisponibilidad",
+          "condition": "B",
+          "for": "0s",
+          "keepFiringFor": "0s",
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "isPaused": false,
+          "annotations": {
+            "summary": "ERP · Indisponibilidad",
+            "description": "Servicio simulado. Verificar el aviso y registrar manualmente el incidente en GLPI."
+          },
+          "labels": {
+            "servicio": "erp",
+            "entorno": "demostracion"
+          },
+          "data": [
+            {
+              "refId": "A",
+              "relativeTimeRange": {
+                "from": 60,
+                "to": 0
+              },
+              "datasourceUid": "prometheus",
+              "model": {
+                "refId": "A",
+                "expr": "((1 - ((max_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) == bool 0) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[15s]) >= bool 3))) * (0.5 + 0.5 * ((min_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) == bool 1) * (count_over_time(probe_success{job=\"erp_disponibilidad\"}[10s]) >= bool 2)))) and on(instance) (up{job=\"erp_disponibilidad\"} == 1)",
+                "instant": true,
+                "range": false,
+                "intervalMs": 5000,
+                "maxDataPoints": 43200,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            },
+            {
+              "refId": "B",
+              "relativeTimeRange": {
+                "from": 0,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "B",
+                "type": "threshold",
+                "expression": "A",
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [
+                        0.01
+                      ],
+                      "type": "lt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": [
+                        "B"
+                      ]
+                    },
+                    "reducer": {
+                      "type": "last",
+                      "params": []
+                    },
+                    "type": "query",
+                    "unloadEvaluator": {
+                      "params": [
+                        0.75
+                      ],
+                      "type": "gt"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "uid": "erp-latencia",
+          "title": "ERP · Simulación previa · Latencia superior a 2 s",
+          "condition": "B",
+          "for": "20s",
+          "keepFiringFor": "0s",
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "isPaused": false,
+          "annotations": {
+            "summary": "ERP · Simulación previa · Latencia superior a 2 s",
+            "description": "Servicio simulado. Verificar el aviso y registrar manualmente el incidente en GLPI."
+          },
+          "labels": {
+            "servicio": "erp",
+            "entorno": "demostracion"
+          },
+          "data": [
+            {
+              "refId": "A",
+              "relativeTimeRange": {
+                "from": 60,
+                "to": 0
+              },
+              "datasourceUid": "prometheus",
+              "model": {
+                "refId": "A",
+                "expr": "erp_latencia_p95_ventana_segundos{fase=\"simulacion_previa\"} and on(operacion) (sum by (operacion) (erp_operaciones_ventana{fase=\"simulacion_previa\"}) >= 20) and on() (up{job=\"colector\"} == 1) and on() (colector_fuente_disponible == 1) and on() ((time() - colector_ultimo_ciclo_timestamp_segundos) < 10)",
+                "instant": true,
+                "range": false,
+                "intervalMs": 5000,
+                "maxDataPoints": 43200,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            },
+            {
+              "refId": "B",
+              "relativeTimeRange": {
+                "from": 0,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "B",
+                "type": "threshold",
+                "expression": "A",
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [
+                        2
+                      ],
+                      "type": "gt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": [
+                        "B"
+                      ]
+                    },
+                    "reducer": {
+                      "type": "last",
+                      "params": []
+                    },
+                    "type": "query"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "uid": "erp-errores",
+          "title": "ERP · Simulación previa · Errores superiores al 1 %",
+          "condition": "B",
+          "for": "20s",
+          "keepFiringFor": "0s",
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "isPaused": false,
+          "annotations": {
+            "summary": "ERP · Simulación previa · Errores superiores al 1 %",
+            "description": "Servicio simulado. Verificar el aviso y registrar manualmente el incidente en GLPI."
+          },
+          "labels": {
+            "servicio": "erp",
+            "entorno": "demostracion"
+          },
+          "data": [
+            {
+              "refId": "A",
+              "relativeTimeRange": {
+                "from": 60,
+                "to": 0
+              },
+              "datasourceUid": "prometheus",
+              "model": {
+                "refId": "A",
+                "expr": "erp_errores_ventana_porcentaje{fase=\"simulacion_previa\"} and on(operacion) (sum by (operacion) (erp_operaciones_ventana{fase=\"simulacion_previa\"}) >= 20) and on() (up{job=\"colector\"} == 1) and on() (colector_fuente_disponible == 1) and on() ((time() - colector_ultimo_ciclo_timestamp_segundos) < 10)",
+                "instant": true,
+                "range": false,
+                "intervalMs": 5000,
+                "maxDataPoints": 43200,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            },
+            {
+              "refId": "B",
+              "relativeTimeRange": {
+                "from": 0,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "refId": "B",
+                "type": "threshold",
+                "expression": "A",
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [
+                        1
+                      ],
+                      "type": "gt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": [
+                        "B"
+                      ]
+                    },
+                    "reducer": {
+                      "type": "last",
+                      "params": []
+                    },
+                    "type": "query"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "contactPoints": [
+    {
+      "orgId": 1,
+      "name": "Buzon local",
+      "receivers": [
+        {
+          "uid": "correo-local",
+          "type": "email",
+          "disableResolveMessage": false,
+          "settings": {
+            "addresses": "ti@correo-horizonte.test",
+            "singleEmail": true,
+            "subject": "[DEMO ERP] {{ .Status }} · {{ .CommonLabels.alertname }}",
+            "message": "Alerta de un servicio simulado. El incidente se registra y se cierra manualmente en GLPI."
+          }
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "orgId": 1,
+      "receiver": "Buzon local",
+      "group_by": [
+        "alertname",
+        "grafana_folder"
+      ],
+      "group_wait": "0s",
+      "group_interval": "5s",
+      "repeat_interval": "1h"
+    }
+  ]
+}

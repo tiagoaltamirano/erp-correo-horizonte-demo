@@ -1,0 +1,282 @@
+{
+  "uid": "erp-historico",
+  "title": "Simulación previa · ERP Correo Horizonte",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "tags": [
+    "demo",
+    "ERP"
+  ],
+  "timezone": "browser",
+  "refresh": "",
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Simulación previa",
+      "type": "text",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 3
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "SIMULACIÓN PREVIA · Las gráficas corresponden al intervalo fechado de una ejecución anterior. p95 > 2 s · Errores > 1 % · Mínimo 20 operaciones por tipo · Ventana acelerada 30 s. No acredita SLO/SLA mensual."
+      }
+    },
+    {
+      "id": 5,
+      "title": "Latencia p95 por operación · mínimo 20",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 3,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "erp_latencia_p95_ventana_segundos{fase=\"simulacion_previa\"} and on(operacion) (sum by (operacion) (erp_operaciones_ventana{fase=\"simulacion_previa\"}) >= 20) and on() (up{job=\"colector\"} == 1) and on() (colector_fuente_disponible == 1) and on() ((time() - colector_ultimo_ciclo_timestamp_segundos) < 10)",
+          "legendFormat": "{{operacion}}",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "noValue": "Dato insuficiente o desconocido",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Tasa de errores por operación · mínimo 20",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 3,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "erp_errores_ventana_porcentaje{fase=\"simulacion_previa\"} and on(operacion) (sum by (operacion) (erp_operaciones_ventana{fase=\"simulacion_previa\"}) >= 20) and on() (up{job=\"colector\"} == 1) and on() (colector_fuente_disponible == 1) and on() ((time() - colector_ultimo_ciclo_timestamp_segundos) < 10)",
+          "legendFormat": "{{operacion}}",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "noValue": "Dato insuficiente o desconocido",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Operaciones válidas en ventana de 30 s",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (operacion) (erp_operaciones_ventana{fase=\"simulacion_previa\"}) and on() (up{job=\"colector\"} == 1) and on() (colector_fuente_disponible == 1) and on() ((time() - colector_ultimo_ciclo_timestamp_segundos) < 10)",
+          "legendFormat": "{{operacion}}",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Dato insuficiente o desconocido",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Sondeos HTTP · 1 éxito / 0 fallo",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 11,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "probe_success{job=\"erp_disponibilidad\"}",
+          "legendFormat": "{{operacion}}",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "Dato insuficiente o desconocido",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value"
+      }
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(80,80,80,1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  }
+}
