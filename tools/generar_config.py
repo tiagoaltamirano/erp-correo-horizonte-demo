@@ -53,7 +53,7 @@ def dashboard(historico=False):
                    panel(6,"Tasa de errores por operación · mínimo 20",errores(fase),"timeseries",12,y,unidad="percent",umbral=1),
                    panel(7,"Operaciones válidas en ventana de 30 s",volumen(fase)+FUENTE,"timeseries",0,y+8),
                    panel(8,"Sondeos HTTP · 1 éxito / 0 fallo",'probe_success{job="erp_disponibilidad"}',"timeseries",12,y+8)])
-    return {"uid":"erp-historico" if historico else "erp-vivo","title":titulo+" · ERP Correo Horizonte","schemaVersion":39,"version":1,"editable":False,"tags":["demo","ERP"],"timezone":"browser","refresh":"5s" if not historico else "", "time":{"from":"now-5m","to":"now"},"panels":panels,"annotations":{"list":[{"builtIn":1,"datasource":{"type":"grafana","uid":"-- Grafana --"},"enable":True,"hide":True,"iconColor":"rgba(80,80,80,1)","name":"Annotations & Alerts","type":"dashboard"}]}}
+    return {"uid":"erp-historico" if historico else "erp-vivo","title":titulo+" · ERP Correo Horizonte","schemaVersion":39,"version":1,"editable":False,"tags":["demo","ERP"],"timezone":"America/Argentina/Buenos_Aires","refresh":"5s" if not historico else "", "time":{"from":"now-5m","to":"now"},"panels":panels,"annotations":{"list":[{"builtIn":1,"datasource":{"type":"grafana","uid":"-- Grafana --"},"enable":True,"hide":True,"iconColor":"rgba(80,80,80,1)","name":"Annotations & Alerts","type":"dashboard"}]}}
 
 
 def regla(uid,titulo,expr,limite,pendiente="0s",recuperacion=None):

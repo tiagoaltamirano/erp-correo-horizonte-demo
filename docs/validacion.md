@@ -14,6 +14,7 @@ Fecha: 21 de octubre de 2026. Servicio y operaciones ficticias. Los resultados s
 | Sondeador detenido | Disponibilidad desconocida; no se presenta como caída confirmada ni como disponibilidad comprobada. |
 | Volumen insuficiente | Con cero operaciones válidas en la ventana no se publican p95 ni tasa de errores como valores válidos. |
 | Reinicio y conservación | Estado de la simulación previa, registros, métricas, correos y configuración de GLPI conservados en volúmenes. Arranque sin construcción ni descargas verificado. |
+| Ensayos manuales mediante Edge | Dos recorridos operativos completos, de 119,1 s y 170,6 s. Tickets #1 y #2 cerrados manualmente, con primera atención y solución persistidas. |
 
 ## Simulación previa y contraste de registros
 
@@ -53,6 +54,21 @@ Durante ese aislamiento pasaron las 19 pruebas, las expresiones de Prometheus, l
 
 Los archivos detallados se conservan localmente en `.evidence/`: `auditoria_historico.json`, `ensayos_alertas.json`, `ensayo_sin_internet.json` y las comprobaciones `calidad_*.json`. Los volúmenes mantienen los registros y las métricas originales. Las credenciales y estos archivos de ejecución quedan fuera de Git.
 
-Esta verificación acredita el funcionamiento técnico indicado. **No se han registrado los dos ensayos manuales completos de exposición ni la revisión visual del recorrido.** Por tanto, todavía no certifica la duración total de cinco minutos, la navegación de las pantallas o el registro y cierre manual de tickets durante la exposición. Esas ejecuciones deben documentarse según `recorrido.md` antes de declarar la aceptación final de la demo.
+## Ensayos manuales y revisión de pantallas
+
+Se ejecutaron dos recorridos consecutivos mediante la interfaz de **Microsoft Edge**, con las sesiones preparadas y sin locución. El registro detallado y los pasos de GLPI están en [recorrido.md](recorrido.md).
+
+| Ensayo | Duración total | Ticket cerrado | Caída → correo | Restablecimiento → correo |
+|---|---:|---|---:|---:|
+| 1 | 119,1 s | #1, 18:10:55 UTC−3 | 14,127 s | 16,314 s |
+| 2 | 170,6 s | #2, 18:14:38 UTC−3 | 15,833 s | 21,856 s |
+
+Las cuatro notificaciones cumplieron 30 s. Cada ticket conserva tipo incidente, categoría ERP Correo Horizonte, urgencia, impacto y prioridad en nivel 5, el técnico local asignado, la primera atención y la solución. Una consulta de solo lectura confirmó el estado cerrado y las fechas guardadas; los tickets se crearon y cerraron por la interfaz, sin inserciones automáticas.
+
+Se revisaron el control, el histórico fechado, la disponibilidad y alerta en vivo, los mensajes de Mailpit y los formularios de GLPI. El control mostró inicialmente la fecha según la zona del navegador: se fijó Buenos Aires en el control y en ambos tableros. Grafana se reinició para aplicar la configuración. GLPI conserva sus campos de fecha en UTC, aclarado en el recorrido.
+
+Las capturas inicial y final del histórico permitieron observar p95 alrededor de 3,05 s y errores del 10 %, con las curvas y el intervalo fechado visibles. Algunas capturas de pestañas en segundo plano omitieron el contenido de los gráficos; se repitió la comprobación con la ventana visible y se conservó `revision-historico-final.png`. La revisión visual y los dos recorridos operativos quedaron completados. Los tiempos registrados corresponden a recorridos sin locución, no a una exposición hablada.
+
+La evidencia local adicional está en `.evidence/ensayos-manuales.json`, `ensayos-correo.json`, `tickets-verificados.json`, los archivos `ensayo*-ticket.txt` y las capturas disponibles. Estos archivos siguen excluidos de Git.
 
 Los resultados no acreditan cumplimiento de un SLO o SLA mensual, cobertura humana continua ni una implementación sobre un ERP productivo.
