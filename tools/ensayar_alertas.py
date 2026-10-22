@@ -41,7 +41,7 @@ def main():
         for desfase in [0,3,7]:
             time.sleep(desfase)
             caida=medir("caida","firing")
-            # La alerta permanece durante el registro manual en el recorrido de exposición.
+            # La alerta permanece durante el registro manual del incidente.
             time.sleep(5)
             recuperacion=medir("normal","resolved")
             resultados.append({"desfase_s":desfase,"caida":caida,"recuperacion":recuperacion})

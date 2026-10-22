@@ -56,7 +56,7 @@ Los archivos detallados se conservan localmente en `.evidence/`: `auditoria_hist
 
 ## Ensayos manuales y revisión de pantallas
 
-Se ejecutaron dos recorridos consecutivos mediante la interfaz de **Microsoft Edge**, con las sesiones preparadas y sin locución. El registro detallado y los pasos de GLPI están en [recorrido.md](recorrido.md).
+Se ejecutaron dos recorridos consecutivos mediante la interfaz de **Microsoft Edge**, con las sesiones preparadas. El registro detallado y los pasos de GLPI están en [recorrido.md](recorrido.md).
 
 | Ensayo | Duración total | Ticket cerrado | Caída → correo | Restablecimiento → correo |
 |---|---:|---|---:|---:|
@@ -67,7 +67,7 @@ Las cuatro notificaciones cumplieron 30 s. Cada ticket conserva tipo incidente, 
 
 Se revisaron el control, el histórico fechado, la disponibilidad y alerta en vivo, los mensajes de Mailpit y los formularios de GLPI. El control mostró inicialmente la fecha según la zona del navegador: se fijó Buenos Aires en el control y en ambos tableros. Grafana se reinició para aplicar la configuración. GLPI conserva sus campos de fecha en UTC, aclarado en el recorrido.
 
-Las capturas inicial y final del histórico permitieron observar p95 alrededor de 3,05 s y errores del 10 %, con las curvas y el intervalo fechado visibles. Algunas capturas de pestañas en segundo plano omitieron el contenido de los gráficos; se repitió la comprobación con la ventana visible y se conservó `revision-historico-final.png`. La revisión visual y los dos recorridos operativos quedaron completados. Los tiempos registrados corresponden a recorridos sin locución, no a una exposición hablada.
+Las capturas inicial y final del histórico permitieron observar p95 alrededor de 3,05 s y errores del 10 %, con las curvas y el intervalo fechado visibles. Algunas capturas de pestañas en segundo plano omitieron el contenido de los gráficos; se repitió la comprobación con la ventana visible y se conservó `revision-historico-final.png`. La revisión visual y los dos recorridos operativos quedaron completados.
 
 La evidencia local adicional está en `.evidence/ensayos-manuales.json`, `ensayos-correo.json`, `tickets-verificados.json`, los archivos `ensayo*-ticket.txt` y las capturas disponibles. Estos archivos siguen excluidos de Git.
 

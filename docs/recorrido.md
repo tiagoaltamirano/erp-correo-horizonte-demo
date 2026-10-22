@@ -1,17 +1,14 @@
-# Recorrido de exposición
+# Recorrido de uso
 
 ## Preparación
 
-Iniciar el entorno, configurar GLPI una sola vez y generar la simulación previa. Comprobar `./verificar.ps1`. Mantener abiertas las sesiones de Grafana y GLPI, el control y Mailpit. El reloj comienza antes de mostrar los ejemplos anteriores.
+Iniciar el entorno, configurar GLPI una sola vez y generar la simulación previa. Comprobar `./verificar.ps1`. Mantener abiertas las sesiones de Grafana y GLPI, el control y Mailpit.
 
-| Tiempo acumulado | Acción y resultado que se observa |
-|---|---|
-| 0:00–0:35 | Iniciar el cronómetro. Mostrar disponibilidad normal y la vista **Simulación previa**, indicando su fecha. Señalar latencia p95 > 2 s y errores > 1 %, con volumen suficiente por operación. |
-| 0:35–1:15 | En el control, seleccionar **Provocar caída**. Mostrar la alerta de indisponibilidad en Grafana y su correo en Mailpit. |
-| 1:15–2:45 | Guardar manualmente el incidente P1 en GLPI, con categoría, responsable y primera atención. |
-| 2:45–3:30 | Seleccionar **Restablecer servicio**. Mostrar disponibilidad y correo de recuperación. |
-| 3:30–4:15 | Registrar solución, comprobar funcionamiento y cerrar manualmente el incidente. Finalizar el cronómetro. |
-| 4:15–5:00 | Margen de navegación. |
+1. Mostrar disponibilidad normal y abrir **Simulación previa**, indicando su fecha. Observar los ejemplos de latencia p95 > 2 s y errores > 1 %, con volumen suficiente por operación.
+2. En el control, seleccionar **Provocar caída**. Comprobar la alerta de indisponibilidad en Grafana y el correo en Mailpit.
+3. Guardar manualmente el incidente P1 en GLPI, con categoría, responsable y primera atención.
+4. Seleccionar **Restablecer servicio**. Comprobar la disponibilidad y el correo de recuperación.
+5. Registrar la solución, verificar el funcionamiento y cerrar manualmente el incidente.
 
 ## Contenido del incidente
 
@@ -40,6 +37,6 @@ Registrar dos ejecuciones consecutivas con la misma configuración. Cada una deb
 | 1 | 21/10/2026, 18:09:02–18:11:01 (UTC−3) | #1, cerrado | 119,1 s (1:59,1) | P1, primera atención y solución guardadas; correos de caída y recuperación comprobados. |
 | 2 | 21/10/2026, 18:11:50–18:14:41 (UTC−3) | #2, cerrado | 170,6 s (2:50,6) | Misma configuración; P1, primera atención, solución y cierre manual comprobados. |
 
-Los recorridos se operaron por la interfaz de Edge, con las sesiones abiertas antes de comenzar, sin locución. El cronómetro incluye navegación y esperas. Ambos quedaron por debajo del objetivo de 4:15 y del límite de 5:00; una exposición hablada requiere distribuir la explicación dentro del margen restante.
+Los recorridos se operaron por la interfaz de Edge, con las sesiones abiertas antes de comenzar.
 
 La revisión visual final confirmó las curvas históricas de latencia y errores en la ventana visible de Edge. Algunas capturas de pestañas en segundo plano omitieron el contenido de los gráficos; para verificar o capturar las curvas, mantener visible la pestaña del tablero.

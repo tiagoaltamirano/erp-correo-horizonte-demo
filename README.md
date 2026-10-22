@@ -18,22 +18,22 @@ La preparación dura aproximadamente cuatro minutos. Esperar su finalización y 
 
 | Vista | Dirección | Acceso |
 |---|---|---|
-| Control de escenarios y cronómetro | http://localhost:8000 | Local |
+| Control de escenarios | http://localhost:8000 | Local |
 | Grafana | http://localhost:3000 | `admin`; clave `GRAFANA_PASSWORD` en `.env` |
 | Incidentes GLPI | http://localhost:8081 | `glpi`; clave `DEMO_PASSWORD` en `.env` |
 | Buzón de alertas | http://localhost:8025 | Local |
 
 El archivo `.env` se genera en la primera ejecución y se excluye del repositorio. Conservarlo junto al entorno local. Las contraseñas se aplican al inicializar los volúmenes: editar `.env` después no modifica las claves ya almacenadas.
 
-## Recorrido de hasta cinco minutos
+## Recorrido de uso
 
-1. Iniciar el cronómetro, mostrar estado normal y abrir **Simulación previa** desde el control. Señalar su fecha y los ejemplos de p95 superior a dos segundos y errores superiores al 1 %.
+1. Mostrar estado normal y abrir **Simulación previa** desde el control. Señalar su fecha y los ejemplos de p95 superior a dos segundos y errores superiores al 1 %.
 2. Seleccionar **Provocar caída**. Consultar Grafana y el correo de indisponibilidad.
 3. En GLPI crear un incidente: título `[P1] ERP Correo Horizonte — indisponibilidad`, categoría `ERP Correo Horizonte`, urgencia e impacto muy altos (P1 del proyecto), técnico `Equipo TI Correo Horizonte`. Describir la alerta y registrar la primera atención.
 4. Seleccionar **Restablecer servicio**. Verificar disponibilidad y correo de recuperación.
-5. Registrar la solución y cerrar manualmente el ticket después de verificar el servicio. Finalizar el cronómetro.
+5. Registrar la solución y cerrar manualmente el ticket después de verificar el servicio.
 
-Objetivo: 4:15; límite: 5:00. No instalar, descargar ni iniciar servicios durante la exposición. Mantener las sesiones de Grafana y GLPI abiertas antes de empezar. La preparación no crea tickets automáticamente.
+Iniciar los servicios y abrir las sesiones de Grafana y GLPI antes de comenzar el recorrido. La preparación no crea tickets automáticamente.
 
 ## Indicadores y tiempos acelerados
 
